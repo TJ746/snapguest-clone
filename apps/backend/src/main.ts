@@ -1,6 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
+// Declare process for TypeScript
+declare const process: any;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({

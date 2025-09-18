@@ -5,7 +5,7 @@ const app_module_1 = require("./app.module");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
-        origin: ['http://localhost:3000', 'https://frontend-bgqgxhnjy-tjs-projects-e59fb6d9.vercel.app'],
+        origin: ['http://localhost:3000', 'https://frontend-ee0ati0my-tjs-projects-e59fb6d9.vercel.app'],
         credentials: true,
     });
     const port = process.env.PORT || 3001;

@@ -7,7 +7,7 @@ declare const process: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://frontend-ee0ati0my-tjs-projects-e59fb6d9.vercel.app'],
+    origin: true, // Allow all origins for now
     credentials: true,
   });
   const port = process.env.PORT || 3001;

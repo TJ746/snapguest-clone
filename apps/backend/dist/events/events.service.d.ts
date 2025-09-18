@@ -22,6 +22,9 @@ export declare class EventsService {
     getSchedule(eventId: string): Promise<{
         title: string;
         description: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
         startAt: Date;
         endAt: Date | null;
         isAllDay: boolean;
@@ -29,9 +32,6 @@ export declare class EventsService {
         address: string | null;
         phone: string | null;
         mapsUrl: string | null;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         eventId: string;
     }[]>;
     getMedia(eventId: string, options: {
@@ -43,8 +43,8 @@ export declare class EventsService {
     }): Promise<{
         media: ({
             _count: {
-                likes: number;
                 comments: number;
+                likes: number;
             };
             comments: {
                 id: string;

@@ -22,6 +22,9 @@ export declare class EventsController {
     getSchedule(eventId: string): Promise<{
         title: string;
         description: string | null;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
         startAt: Date;
         endAt: Date | null;
         isAllDay: boolean;
@@ -29,16 +32,13 @@ export declare class EventsController {
         address: string | null;
         phone: string | null;
         mapsUrl: string | null;
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
         eventId: string;
     }[]>;
     getMedia(eventId: string, filter?: string, user?: string, timeline?: string, order?: string, page?: string): Promise<{
         media: ({
             _count: {
-                likes: number;
                 comments: number;
+                likes: number;
             };
             comments: {
                 id: string;

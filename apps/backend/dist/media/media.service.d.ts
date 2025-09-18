@@ -8,6 +8,7 @@ export declare class MediaService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        eventId: string;
         type: import("@prisma/client").$Enums.MediaType;
         originalUrl: string;
         thumbnailUrl: string | null;
@@ -22,7 +23,6 @@ export declare class MediaService {
         downloadsCount: number;
         isApproved: boolean;
         isPrivateForOrganiser: boolean;
-        eventId: string;
     }>;
     getUploadUrl(eventId: string, data: {
         fileName: string;
@@ -52,6 +52,7 @@ export declare class MediaService {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        eventId: string;
         type: import("@prisma/client").$Enums.MediaType;
         originalUrl: string;
         thumbnailUrl: string | null;
@@ -66,9 +67,12 @@ export declare class MediaService {
         downloadsCount: number;
         isApproved: boolean;
         isPrivateForOrganiser: boolean;
-        eventId: string;
     }>;
     findOne(mediaId: string): Promise<{
+        _count: {
+            comments: number;
+            likes: number;
+        };
         comments: {
             id: string;
             createdAt: Date;
@@ -77,14 +81,11 @@ export declare class MediaService {
             clientId: string;
             mediaId: string;
         }[];
-        _count: {
-            comments: number;
-            likes: number;
-        };
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        eventId: string;
         type: import("@prisma/client").$Enums.MediaType;
         originalUrl: string;
         thumbnailUrl: string | null;
@@ -99,6 +100,5 @@ export declare class MediaService {
         downloadsCount: number;
         isApproved: boolean;
         isPrivateForOrganiser: boolean;
-        eventId: string;
     }>;
 }

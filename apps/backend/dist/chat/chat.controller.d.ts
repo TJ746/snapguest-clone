@@ -6,17 +6,17 @@ export declare class ChatController {
     sendMessage(eventId: string, createMessageDto: CreateChatMessageDto): Promise<{
         id: string;
         createdAt: Date;
+        eventId: string;
         text: string;
         authorName: string;
         clientId: string;
-        eventId: string;
     }>;
     getMessages(eventId: string, limit?: string, before?: string): Promise<{
         id: string;
         createdAt: Date;
+        eventId: string;
         text: string;
         authorName: string;
         clientId: string;
-        eventId: string;
     }[]>;
 }

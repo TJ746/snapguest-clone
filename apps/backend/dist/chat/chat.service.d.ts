@@ -6,10 +6,10 @@ export declare class ChatService {
     sendMessage(eventId: string, createMessageDto: CreateChatMessageDto): Promise<{
         id: string;
         createdAt: Date;
+        eventId: string;
         text: string;
         authorName: string;
         clientId: string;
-        eventId: string;
     }>;
     getMessages(eventId: string, options: {
         limit?: number;
@@ -17,9 +17,9 @@ export declare class ChatService {
     }): Promise<{
         id: string;
         createdAt: Date;
+        eventId: string;
         text: string;
         authorName: string;
         clientId: string;
-        eventId: string;
     }[]>;
 }

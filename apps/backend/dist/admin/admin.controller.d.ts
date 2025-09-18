@@ -1,0 +1,326 @@
+import { AdminService } from './admin.service';
+import { CreateEventDto } from '../events/dto/create-event.dto';
+import { UpdateEventDto } from '../events/dto/update-event.dto';
+import { CreateScheduleItemDto } from './dto/create-schedule-item.dto';
+import { UpdateScheduleItemDto } from './dto/update-schedule-item.dto';
+export declare class AdminController {
+    private readonly adminService;
+    constructor(adminService: AdminService);
+    getAllEvents(): Promise<({
+        _count: {
+            scheduleItems: number;
+            media: number;
+            chatMessages: number;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        startsAt: Date | null;
+        endsAt: Date | null;
+        expiresAt: Date | null;
+        language: string;
+        joinCode: string | null;
+        isPrivate: boolean;
+        hasTimeline: boolean;
+        hasChat: boolean;
+        coverImageUrl: string | null;
+        coverTemplate: string | null;
+        profileImageUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+        whatsappUrl: string | null;
+        websiteUrl: string | null;
+        adminId: string;
+    })[]>;
+    createEvent(createEventDto: CreateEventDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        startsAt: Date | null;
+        endsAt: Date | null;
+        expiresAt: Date | null;
+        language: string;
+        joinCode: string | null;
+        isPrivate: boolean;
+        hasTimeline: boolean;
+        hasChat: boolean;
+        coverImageUrl: string | null;
+        coverTemplate: string | null;
+        profileImageUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+        whatsappUrl: string | null;
+        websiteUrl: string | null;
+        adminId: string;
+    }>;
+    getEvent(id: string): Promise<{
+        scheduleItems: {
+            id: string;
+            createdAt: Date;
+            updatedAt: Date;
+            title: string;
+            description: string | null;
+            sortOrder: number;
+            startAt: Date;
+            endAt: Date | null;
+            isAllDay: boolean;
+            address: string | null;
+            phone: string | null;
+            mapsUrl: string | null;
+            eventId: string;
+        }[];
+        _count: {
+            media: number;
+            chatMessages: number;
+        };
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        startsAt: Date | null;
+        endsAt: Date | null;
+        expiresAt: Date | null;
+        language: string;
+        joinCode: string | null;
+        isPrivate: boolean;
+        hasTimeline: boolean;
+        hasChat: boolean;
+        coverImageUrl: string | null;
+        coverTemplate: string | null;
+        profileImageUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+        whatsappUrl: string | null;
+        websiteUrl: string | null;
+        adminId: string;
+    }>;
+    updateEvent(id: string, updateEventDto: UpdateEventDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        startsAt: Date | null;
+        endsAt: Date | null;
+        expiresAt: Date | null;
+        language: string;
+        joinCode: string | null;
+        isPrivate: boolean;
+        hasTimeline: boolean;
+        hasChat: boolean;
+        coverImageUrl: string | null;
+        coverTemplate: string | null;
+        profileImageUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+        whatsappUrl: string | null;
+        websiteUrl: string | null;
+        adminId: string;
+    }>;
+    deleteEvent(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        startsAt: Date | null;
+        endsAt: Date | null;
+        expiresAt: Date | null;
+        language: string;
+        joinCode: string | null;
+        isPrivate: boolean;
+        hasTimeline: boolean;
+        hasChat: boolean;
+        coverImageUrl: string | null;
+        coverTemplate: string | null;
+        profileImageUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+        whatsappUrl: string | null;
+        websiteUrl: string | null;
+        adminId: string;
+    }>;
+    copyEvent(id: string, data: {
+        newStartDate?: Date;
+    }): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        startsAt: Date | null;
+        endsAt: Date | null;
+        expiresAt: Date | null;
+        language: string;
+        joinCode: string | null;
+        isPrivate: boolean;
+        hasTimeline: boolean;
+        hasChat: boolean;
+        coverImageUrl: string | null;
+        coverTemplate: string | null;
+        profileImageUrl: string | null;
+        instagramUrl: string | null;
+        tiktokUrl: string | null;
+        whatsappUrl: string | null;
+        websiteUrl: string | null;
+        adminId: string;
+    }>;
+    getScheduleItems(eventId: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        sortOrder: number;
+        startAt: Date;
+        endAt: Date | null;
+        isAllDay: boolean;
+        address: string | null;
+        phone: string | null;
+        mapsUrl: string | null;
+        eventId: string;
+    }[]>;
+    createScheduleItem(eventId: string, createScheduleItemDto: CreateScheduleItemDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        sortOrder: number;
+        startAt: Date;
+        endAt: Date | null;
+        isAllDay: boolean;
+        address: string | null;
+        phone: string | null;
+        mapsUrl: string | null;
+        eventId: string;
+    }>;
+    updateScheduleItem(id: string, updateScheduleItemDto: UpdateScheduleItemDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        sortOrder: number;
+        startAt: Date;
+        endAt: Date | null;
+        isAllDay: boolean;
+        address: string | null;
+        phone: string | null;
+        mapsUrl: string | null;
+        eventId: string;
+    }>;
+    deleteScheduleItem(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        sortOrder: number;
+        startAt: Date;
+        endAt: Date | null;
+        isAllDay: boolean;
+        address: string | null;
+        phone: string | null;
+        mapsUrl: string | null;
+        eventId: string;
+    }>;
+    reorderScheduleItem(id: string, data: {
+        sortOrder: number;
+    }): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        sortOrder: number;
+        startAt: Date;
+        endAt: Date | null;
+        isAllDay: boolean;
+        address: string | null;
+        phone: string | null;
+        mapsUrl: string | null;
+        eventId: string;
+    }>;
+    getEventMedia(eventId: string): Promise<({
+        _count: {
+            comments: number;
+            likes: number;
+        };
+        comments: {
+            id: string;
+            createdAt: Date;
+            text: string;
+            authorName: string;
+            clientId: string;
+            mediaId: string;
+        }[];
+    } & {
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        eventId: string;
+        type: import("@prisma/client").$Enums.MediaType;
+        originalUrl: string;
+        thumbnailUrl: string | null;
+        mimeType: string;
+        fileSize: number | null;
+        width: number | null;
+        height: number | null;
+        uploaderName: string;
+        uploaderClientId: string;
+        exifTakenAt: Date | null;
+        likesCount: number;
+        downloadsCount: number;
+        isApproved: boolean;
+        isPrivateForOrganiser: boolean;
+    })[]>;
+    deleteMedia(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        eventId: string;
+        type: import("@prisma/client").$Enums.MediaType;
+        originalUrl: string;
+        thumbnailUrl: string | null;
+        mimeType: string;
+        fileSize: number | null;
+        width: number | null;
+        height: number | null;
+        uploaderName: string;
+        uploaderClientId: string;
+        exifTakenAt: Date | null;
+        likesCount: number;
+        downloadsCount: number;
+        isApproved: boolean;
+        isPrivateForOrganiser: boolean;
+    }>;
+    exportMedia(eventId: string, data: {
+        size: 'small' | 'medium' | 'original';
+    }): Promise<{
+        message: string;
+        downloadUrl: string;
+    }>;
+    exportPDF(eventId: string, data: {
+        customDescription?: string;
+    }): Promise<{
+        message: string;
+        downloadUrl: string;
+    }>;
+    exportQR(eventId: string, data: {
+        foregroundColor?: string;
+        backgroundColor?: string;
+        size?: number;
+    }): Promise<{
+        message: string;
+        downloadUrl: string;
+        qrUrl: string;
+    }>;
+}

@@ -1,0 +1,248 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// Core user of the system (admin or guest)
+model User {
+  id           String        @id @default(cuid())
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  email        String?       @unique
+  displayName  String
+  avatarUrl    String?
+  
+  // Admin-specific fields
+  isAdmin      Boolean       @default(false)
+  passwordHash String?       // only for admins
+  
+  // Relations
+  adminEvents  Event[]       @relation("AdminEvents")
+  memberships  Membership[]
+  posts        Post[]
+  comments     Comment[]
+  likes        Like[]
+}
+
+/// Event container for temporary social space
+model Event {
+  id             String        @id @default(cuid())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  title          String
+  description    String?
+  startsAt       DateTime?
+  endsAt         DateTime?
+  expiresAt      DateTime?     // when content should no longer be visible
+  language       String        @default("de_CH")
+  joinCode       String?       @unique
+  isPrivate      Boolean       @default(true)
+  
+  // Admin features
+  hasTimeline    Boolean       @default(false)
+  hasChat        Boolean       @default(false)
+  
+  // Visual assets
+  coverImageUrl  String?       // custom upload or template
+  coverTemplate  String?       // template ID (wedding, birthday, etc.)
+  profileImageUrl String?
+  
+  // Social links (displayed as icons in info tab)
+  instagramUrl   String?
+  tiktokUrl      String?
+  whatsappUrl    String?
+  websiteUrl     String?
+  
+  // Relations
+  adminId        String
+  admin          User          @relation("AdminEvents", fields: [adminId], references: [id])
+  memberships    Membership[]
+  posts          Post[]
+  scheduleItems  ScheduleItem[]
+  media          Media[]
+  chatMessages   ChatMessage[]
+}
+
+/// Relation user <-> event with role
+model Membership {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  role      Role     @default(GUEST)
+
+  userId String
+  eventId String
+  user   User   @relation(fields: [userId], references: [id])
+  event  Event  @relation(fields: [eventId], references: [id])
+
+  @@unique([userId, eventId])
+}
+
+enum Role {
+  ADMIN
+  GUEST
+  MODERATOR
+}
+
+/// A post can be a photo or a text message
+model Post {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  type        PostType   @default(PHOTO)
+  text        String?
+  mediaUrl    String?    // e.g. S3/Supabase Storage URL
+  mediaThumb  String?
+  mimeType    String?
+  isApproved  Boolean    @default(true)
+
+  eventId String
+  authorId String
+  event   Event    @relation(fields: [eventId], references: [id])
+  author  User     @relation(fields: [authorId], references: [id])
+
+  comments Comment[]
+  likes    Like[]
+}
+
+enum PostType {
+  PHOTO
+  TEXT
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  text      String
+
+  postId  String
+  authorId String
+  post    Post   @relation(fields: [postId], references: [id])
+  author  User   @relation(fields: [authorId], references: [id])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  postId  String
+  userId  String
+  post    Post   @relation(fields: [postId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+}
+
+/// Timeline/Schedule items for events (admin-managed)
+model ScheduleItem {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String
+  description String?
+  startAt     DateTime
+  endAt       DateTime?
+  isAllDay    Boolean   @default(false)
+  sortOrder   Int       @default(0)
+  
+  // Contact information (displayed as clickable icons)
+  address     String?
+  phone       String?
+  mapsUrl     String?
+  
+  eventId     String
+  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+/// Media files (photos/videos) uploaded by guests
+model Media {
+  id              String     @id @default(cuid())
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  type            MediaType  @default(PHOTO)
+  originalUrl     String     // full resolution
+  thumbnailUrl    String?    // compressed version
+  mimeType        String
+  fileSize        Int?       // bytes
+  width           Int?
+  height          Int?
+  
+  // Upload metadata
+  uploaderName    String     // nickname entered by guest
+  uploaderClientId String    // for ownership without login
+  exifTakenAt     DateTime?  // from photo metadata for timeline sorting
+  
+  // Engagement
+  likesCount      Int        @default(0)
+  downloadsCount  Int        @default(0)
+  
+  // Moderation
+  isApproved      Boolean    @default(true)
+  isPrivateForOrganiser Boolean @default(false) // "Only visible for organiser" checkbox
+  
+  eventId         String
+  event           Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  comments        MediaComment[]
+  likes           MediaLike[]
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+}
+
+/// Comments on media files
+model MediaComment {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  text        String
+  authorName  String   // nickname, no login required
+  clientId    String   // for potential moderation
+  
+  mediaId     String
+  media       Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+}
+
+/// Likes on media files
+model MediaLike {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  clientId  String   // guest identifier
+  
+  mediaId   String
+  media     Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  
+  @@unique([mediaId, clientId])
+}
+
+/// Chat messages for event discussions
+model ChatMessage {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  text        String
+  authorName  String   // nickname entered by guest
+  clientId    String   // for potential moderation/identification
+  
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+/// Predefined cover image templates for events
+model EventTemplate {
+  id          String   @id @default(cuid())
+  name        String   // "wedding", "birthday", "neutral", "flowers", etc.
+  imageUrl    String
+  category    String   // for grouping in admin UI
+  isActive    Boolean  @default(true)
+}
